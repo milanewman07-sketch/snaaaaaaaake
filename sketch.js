@@ -23,71 +23,40 @@ function setup() {
 function draw() {
     background(255)
 
-    // head
-
-    // key presses
-    if (keyCode == ENTER) {
+    if (keyCode == ENTER && died) {
         died = false
         headX = 300
         headY = 300
-    } else if (keyCode == UP_ARROW) {
-        up = true
-        down = false
-        left = false
-        right = false
-    } else if (keyCode == DOWN_ARROW) {
-        up = false
-        down = true
-        left = false
-        right = false
-    } else if (keyCode == LEFT_ARROW) {
-        up = false
-        down = false
-        left = true
-        right = false
-    } else if (keyCode == RIGHT_ARROW) {
-        up = false
-        down = false
-        left = false
-        right = true
-    } else {
-        up = false
-        down = false
-        left = false
-        right = true
-    }
-
-
-    // changes direction from keys
-    if (!died) {
-        if (left) {
-            moveX = -20
-            moveY = 0
-        } else if (right) {
-            moveX = 20
-            moveY = 0
-        } else if (up) {
-            moveY = -20
-            moveX = 0
-        } else if (down) {
-            moveY = 20
-            moveX = 0
-        }
-    }
-
-
-    // stop game at walls
-    if ((headX >= width - 20 || headX < 20) && (left || right)) {
+    } else if (keyCode == UP_ARROW && !died) {
+        moveY = -GRID_SIZE
         moveX = 0
-        died = true
-    }
-
-    // stop game at ceiling
-    if ((headY >= height - 20 || headY < 20) && (up || down)) {
+    } else if (keyCode == DOWN_ARROW && !died) {
+        moveY = GRID_SIZE
+        moveX = 0
+    } else if (keyCode == LEFT_ARROW && !died) {
+        moveX = -GRID_SIZE
         moveY = 0
-        died = true
+    } else if (keyCode == RIGHT_ARROW && !died) {
+        moveX = GRID_SIZE
+        moveY = 0
+    } else {
+        moveX = 0
+        moveY = 0
     }
 
+    if (headX < 0) {
+        died = true
+        headX += GRID_SIZE
+    } else if (headX >= width) {
+        died = true
+        headX -= GRID_SIZE
+    } else if (headY < 0) {
+        died = true
+        headY += GRID_SIZE
+    } else if (headY >= height) {
+        died = true
+        headY -= GRID_SIZE
+    }
 
     fill(0);
     rect(headX, headY, 20)
