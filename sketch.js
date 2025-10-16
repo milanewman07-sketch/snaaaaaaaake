@@ -15,11 +15,12 @@ let foodY = 0;
 function setup() {
     createCanvas(600, 600)
     frameRate(5)
+
 }
 
 function draw() {
     background(255)
-
+    drawGrid()
 
     //check if snake is in bounds
     if (isOutOfBounds(headX, -20, width) || isOutOfBounds(headY, -20, height)) {
@@ -28,15 +29,15 @@ function draw() {
 
     // if dead condition T enter died state
     if (died) {
+        fill(0)
         text("died", 500, 500)
     }
 
 
     if (keyCode == ENTER) {
         died = false
-        headX = 300
-        headY = 300
-        start = true
+        headX = 280
+        headY = 280
     } else if (keyCode == UP_ARROW && !died && lastInput != 2) {
         moveY = -GRID_SIZE
         moveX = 0
@@ -65,20 +66,20 @@ function draw() {
         }
     }
 
-
-
-    fill(0);
-    rect(headX, headY, 20)
+    
     headX += moveX
     headY += moveY
+    fill(0);
+    rect(headX, headY, 20, 20, 4)
 
-    if (start) {
-        foodX = floor(random(0,30) * 20)
-        foodY = floor(random(0,30) * 20)
+
+    if (start === true) {
+        foodX = floor(random(0,30)) * 20
+        foodY = floor(random(0,30)) * 20
+        start = false
     }
 
     makeFood()
-        
 
     start = false
 }
@@ -86,7 +87,7 @@ function draw() {
 function makeFood() { 
     // food
     fill(255, 50, 0)
-    circle(foodX + 5, foodY + 10, 20)
+    circle(foodX + 10, foodY + 10, 20)
 }
 
 
@@ -95,5 +96,22 @@ function isOutOfBounds(coordinate, minVal, maxVal) {
         return false
     } else {
         return true
+    }
+}
+
+function drawGrid() {
+    let loops = 0;
+    let y = 0;
+
+    stroke(150, 150, 150)
+
+    while (loops <= 30) {
+        strokeWeight(0.25)
+        for ( let x = 0 ; x < width ; x +=20) {
+            fill(255)
+            square(x, y, 20, 4)
+        }
+        y += 20
+        loops ++
     }
 }
